@@ -18,7 +18,20 @@ namespace AirsoftManager_server.Controllers
         [HttpGet]
        public IActionResult GetAll()
         {
-            return Ok(_context.Sessions.OrderBy(t => t.SessionDate).ThenBy(t => t.HeureDebut).ToList());
+            var result = _context.Sessions
+                         .GroupJoin(
+                             _context.SessionParticipants,
+                             s => s.SessionId,
+                             sp => sp.SessionId,
+                             (s, participants) => new
+                             {
+                                 Session = s,
+                                 NumberOfParticipants = participants.Count()
+                             })
+                         .OrderBy(r => r.Session.SessionDate)
+                         .ThenBy(r => r.Session.HeureDebut)
+                         .ToList();
+            return Ok(result);
         }
 
     }
