@@ -62,6 +62,7 @@ namespace AirsoftManager_server.Controllers
                 {
                     Participant_id = ParticipantID,
                     SessionId = sessionID,
+                    IsScanned = false,
                 };
 
                 _context.SessionParticipants.Add(sessionParticipant);

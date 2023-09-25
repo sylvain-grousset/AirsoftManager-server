@@ -14,4 +14,7 @@ public partial class SessionParticipant
 
     [Column("participant_id")]
     public int Participant_id { get; set; }
+
+    [Column("isScanned")]
+    public bool IsScanned { get; set; }
 }
