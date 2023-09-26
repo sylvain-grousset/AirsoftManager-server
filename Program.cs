@@ -1,4 +1,6 @@
+using AirsoftManager_server.Interface;
 using AirsoftManager_server.Models;
+using AirsoftManager_server.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AirsoftManagerContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("AirsoftManager")));
 
-
+builder.Services.AddSingleton<IEmail, EmailService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
