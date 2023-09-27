@@ -9,6 +9,7 @@ namespace AirsoftManager_server.Utils
 {
     public class QR
     {
+        //@TODO : Change base64 to an image generated and stored on the server and use this image in email.
         public static string GenerateQR()
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
