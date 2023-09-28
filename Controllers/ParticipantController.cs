@@ -54,6 +54,22 @@ namespace AirsoftManager_server.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult GetParticipantStatus(int sessionID, bool isScanned)
+        {
+            List<Participant> lesParticipants = _context.SessionParticipants
+                .Join(_context.Participants, p => p.Participant_id, sp => sp.ParticipantId,
+                    (sp, participant) => new
+                    {
+                        sp,
+                        participant
+                    })
+                .Where(t => t.sp.SessionId == sessionID && t.sp.IsScanned == isScanned)
+                .Select(t => t.participant).ToList();
+
+            return Ok(lesParticipants);
+        }
+
         private bool AddParticipantToSession(int sessionID, int ParticipantID)
         {
             try
