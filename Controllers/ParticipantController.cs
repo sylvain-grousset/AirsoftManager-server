@@ -1,5 +1,6 @@
 ﻿using AirsoftManager_server.Models;
 using Microsoft.AspNetCore.Mvc;
+using AirsoftManager_server.Utils;
 
 namespace AirsoftManager_server.Controllers
 {
@@ -45,7 +46,8 @@ namespace AirsoftManager_server.Controllers
 
             if(isAlreadyRegistered == null)
             {
-                return Ok(AddParticipantToSession(leParticipant.sessionID, participant.ParticipantId));
+                AddParticipantToSession(leParticipant.sessionID, participant.ParticipantId);
+                return Json(QR.GenerateQR());
             }
             else
             {
