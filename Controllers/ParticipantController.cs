@@ -1,6 +1,7 @@
 ﻿using AirsoftManager_server.Models;
 using Microsoft.AspNetCore.Mvc;
 using AirsoftManager_server.Utils;
+using AirsoftManager_server.Interface;
 
 namespace AirsoftManager_server.Controllers
 {
@@ -10,10 +11,14 @@ namespace AirsoftManager_server.Controllers
     {
 
         private readonly AirsoftManagerContext _context;
+        public readonly IEmail _email;
+        public readonly IConfiguration _configuration;
 
-        public ParticipantController(AirsoftManagerContext context)
+        public ParticipantController(AirsoftManagerContext context, IEmail email, IConfiguration configuration)
         {
             _context = context;
+            _email = email;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -46,6 +51,9 @@ namespace AirsoftManager_server.Controllers
 
             if(isAlreadyRegistered == null)
             {
+                AWS_SES aws_ses_conf = _configuration.GetSection("AWS").Get<AWS_SES>();
+                _email.SendEmailAsync("sylvain.grousset1@gmail.com", QR.GenerateQR(), _email.ConfigureSMTP(aws_ses_conf));
+
                 AddParticipantToSession(leParticipant.sessionID, participant.ParticipantId);
                 return Json(QR.GenerateQR());
             }
